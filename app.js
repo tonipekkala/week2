@@ -1,45 +1,50 @@
 'use strict';
-
-const catModel = require('./models/catModel.js');
+require('dotenv').config()
 const express = require('express');
 const catRoute = require('./routes/catRoute');
+const catModel = require('./models/catModel');
+const userRoute = require('./routes/userRoute');
+const userModel = require('./models/userModel');
 const app = express();
 const port = 3000;
+var cors = require('cors')
 
-// app.get('/cat', (req, res) => {
-//   res.send('From this endpoint you can get cats.')
-// });
 
-/*
-const cats = [
-  {
-    id: '1',
-    name: 'Frank',
-    birthdate: '2010-10-30',
-    weight: '5',
-    owner: '1',
-    filename: 'http://placekitten.com/400/300',
-  },
-  {
-    id: '2',
-    name: 'James',
-    birthdate: '2015-12-25',
-    weight: '11',
-    owner: '2',
-    filename: 'http://placekitten.com/400/302',
-  },
-];
-*/
 
+app.use(express.json()) // for parsing application/json
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
+app.use('/user', userRoute)
+app.use('/cat', catRoute)
+app.use(cors())
 
-app.route('/cat/:id')
+
+app.get('/test', function (req, res, next) {
+  res.json({msg: 'This is CORS-enabled for all origins!'})
+})
+
+
+
+
+
+
+
+/*app.route('/cat/:id')
 .get((req, res) => {
 	var testi = "You reqested a cat whose id is " + req.params.id;
 	
 	console.log("Kissojen pituus = ",catModel.cats.length);
+
+	catModel.cats.forEach(cat => { if(cat.id == req.params.id) { testi = testi +" "+ cat.name } } )
+	
+    res.send(testi)
+	
+	console.log(testi)	
+  })
+  */
+
 
 /*
 	for(var i=0;i<catModel.cats.length;i++) {
@@ -50,22 +55,13 @@ app.route('/cat/:id')
 		}
 	}
 */	
-	catModel.cats.forEach(cat => { if(cat.id == req.params.id) { testi = testi +" "+ cat.name } } )
-	
-    res.send(testi)
-	
-	console.log(testi)	
-  })
-  
-/*
-const getCat = async () => {
-  const response = await fetch('./models/catModel.js');
-  const json = await response.json();
-  console.log(json.name);
-};
-*/
 
-app.route('/cat')
+
+/* app.get('/cat', (req, res) => {
+	res.send('From this endpoint you can get cats.')
+ });
+
+ app.route('/cat')
  .get((req, res) => {
     res.send('From this endpoint you can get cats.')
   })
@@ -78,5 +74,4 @@ app.route('/cat')
   .delete((req, res) => {
     res.send('With this endpoint you can delete cats.')
   })
-
-
+*/
