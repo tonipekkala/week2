@@ -10,7 +10,9 @@ const port = 3000;
 var cors = require('cors')
 
 
-
+app.use(express.static('routes'))
+app.use(express.static('uploads'))
+app.use(express.static(__dirname))
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
